@@ -4,15 +4,25 @@ import { Sidebar } from "@/components/Sidebar";
 import { NoteEditor } from "@/components/NoteEditor";
 import { NoteList } from "@/components/NoteList";
 import { SearchBar } from "@/components/SearchBar";
+import { AIChatBot } from "@/components/AIChatBot";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, MessageCircle } from "lucide-react";
 import { useNotes, Note } from "@/hooks/useNotes";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Index = () => {
   const { notes, loading, createNote, updateNote, deleteNote } = useNotes();
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleCreateNote = async () => {
     const newNote = await createNote();
@@ -81,6 +91,30 @@ const Index = () => {
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
               />
+              
+              <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    AI Chat
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-[400px] sm:w-[540px]">
+                  <SheetHeader>
+                    <SheetTitle>AI Notebook Assistant</SheetTitle>
+                    <SheetDescription>
+                      Chat with AI about your notes. Ask questions, get summaries, or find information.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="mt-6 h-[calc(100vh-120px)]">
+                    <AIChatBot userId="current-user-id" />
+                  </div>
+                </SheetContent>
+              </Sheet>
+              
               <Button
                 onClick={handleCreateNote}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
