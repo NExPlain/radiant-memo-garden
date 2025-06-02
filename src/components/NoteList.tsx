@@ -3,7 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, Calendar } from "lucide-react";
-import { Note } from "@/pages/Index";
+import { Note } from "@/hooks/useNotes";
 
 interface NoteListProps {
   notes: Note[];
@@ -13,7 +13,8 @@ interface NoteListProps {
 }
 
 export const NoteList = ({ notes, selectedNote, onNoteSelect, onNoteDelete }: NoteListProps) => {
-  const formatDate = (date: Date) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
@@ -78,7 +79,7 @@ export const NoteList = ({ notes, selectedNote, onNoteSelect, onNoteDelete }: No
                 
                 <div className="flex items-center text-xs text-slate-500">
                   <Calendar className="w-3 h-3 mr-1" />
-                  {formatDate(note.updatedAt)}
+                  {formatDate(note.updated_at)}
                 </div>
               </div>
             </div>

@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Save, Tag, X } from "lucide-react";
-import { Note } from "@/pages/Index";
+import { Note } from "@/hooks/useNotes";
 import { useToast } from "@/hooks/use-toast";
 
 interface NoteEditorProps {
@@ -40,6 +40,7 @@ export const NoteEditor = ({ note, onNoteUpdate }: NoteEditorProps) => {
       title: title.trim() || "Untitled Note",
       content,
       tags,
+      updated_at: new Date().toISOString(),
     };
     onNoteUpdate(updatedNote);
     setHasChanges(false);
